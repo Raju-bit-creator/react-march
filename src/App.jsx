@@ -4,13 +4,18 @@ import viteLogo from "./assets/vite.svg";
 import heroImg from "./assets/hero.png";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from "./components/Home";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Login from "./components/Login";
 
 function App() {
   const [count, setCount] = useState(0);
   const [name, setName] = useState("Techyvercity");
 
   const handleClick = () => {
-    setCount((prevCount) => prevCount + 1);
+    setCount((i) => i + 1);
   };
 
   const handleReset = () => {
@@ -23,11 +28,16 @@ function App() {
 
   return (
     <>
-      <h2>welcome to {title}</h2>
-      <Navbar title="Techyvercity" />
-
-      <h1>{name}</h1>
-      <button onClick={handleNameChange}>Change Name</button>
+      <Router>
+        <Navbar title={title} />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
+      {/* <Navbar title="Techyvercity" /> */}
     </>
   );
 }
