@@ -9,10 +9,12 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
+import Footer from "./components/Footer";
+import Signup from "./components/Signup";
 
 function App() {
   const [count, setCount] = useState(0);
-  const [name, setName] = useState("Techyvercity");
+  const [, setName] = useState("Techyvercity");
 
   const handleClick = () => {
     setCount((i) => i + 1);
@@ -35,7 +37,9 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Signup />} />
         </Routes>
+        <Footer />
       </Router>
       {/* <Navbar title="Techyvercity" /> */}
     </>

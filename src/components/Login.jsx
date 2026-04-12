@@ -1,5 +1,6 @@
 import React from "react";
 import LoginImage from "../assets/login.png";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [credentials, setCredentials] = React.useState({
@@ -33,7 +34,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full flex flex-row items-center gap-4 justify-center px-10 py-20">
+    <div className="w-full flex flex-row hover:origin-top  gap-4 justify-center px-10 py-20">
       <div>
         <div className="w-full rounded-full bg-gray-200 flex items-center justify-center">
           <img src={LoginImage} alt="login" className="aspect-square" />
@@ -69,10 +70,13 @@ const Login = () => {
           >
             Login
           </button>
+          <p>
+            Not register? <Link to="/register">Sign up</Link>
+          </p>
         </form>
       </div>
 
-      {/* <button className="bg-blue-500 px-3 py-1 translate-y-4 origin-center rotate-45  text-white rounded-md hover:bg-black transition duration-300">
+      {/* <button className="bg-blue-500 px-3 outline outline-offset-2 outline-pink-500 py-1 translate-y-4 origin-center rotate-12 hover:origin-top  text-white rounded-md hover:bg-black transition duration-300">
         Login
       </button> */}
     </div>
