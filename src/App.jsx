@@ -11,6 +11,9 @@ import Contact from "./components/Contact";
 import Login from "./components/Login";
 import Footer from "./components/Footer";
 import Signup from "./components/Signup";
+import ProductState from "./context/ProductState";
+import Product from "./components/Product";
+import SingleProduct from "./components/SingleProduct";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -30,18 +33,22 @@ function App() {
 
   return (
     <>
-      <Router>
-        <Navbar title={title} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Signup />} />
-        </Routes>
-        <Footer />
-      </Router>
-      {/* <Navbar title="Techyvercity" /> */}
+      <ProductState>
+        <Router>
+          <Navbar title={title} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Signup />} />
+            <Route path="/products" element={<Product />} />
+            <Route path="/products/:id/category" element={<SingleProduct />} />
+          </Routes>
+          <Footer />
+        </Router>
+        {/* <Navbar title="Techyvercity" /> */}
+      </ProductState>
     </>
   );
 }

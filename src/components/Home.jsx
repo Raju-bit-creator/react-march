@@ -9,17 +9,22 @@ const Home = () => {
   return (
     <div>
       <Carousel>
-        <div>
-          <img src={image1} alt="Slide 1" />
-          <p className="legend">Legend 1</p>
+        <div className="relative">
+          <img src={image1} alt="Slide 1" className="w-full" />
+
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
+
+          {/* Text */}
+          <p className="absolute bottom-4 left-4 text-white">Legend 1</p>
         </div>
-        <div>
-          <img src={image2} alt="Slide 2" />
-          <p className="legend">Legend 2</p>
-        </div>
-        <div>
-          <img src={image2} alt="Slide 3" />
-          <p className="legend">Legend 3</p>
+
+        <div className="relative">
+          <img src={image2} alt="Slide 2" className="w-full" />
+
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
+
+          <p className="absolute bottom-4 left-4 text-white">Legend 2</p>
         </div>
       </Carousel>
 
@@ -75,7 +80,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="relative w-full h-64 bg-gray-200 mt-4">
+      <div className="relative hidden w-full h-64 bg-gray-200 mt-4">
         <p>Relative parent</p>
         <div className="absolute bottom-20 left-100 bg-gray-400 p-2">
           <p>Absolute child</p>
