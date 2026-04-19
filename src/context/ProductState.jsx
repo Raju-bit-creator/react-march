@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useReducer } from "react";
 import ProductContext from "./ProductContext";
+import { cartReducer } from "./Reducer";
 
 const ProductState = (props) => {
   const prod = [
@@ -8,6 +9,7 @@ const ProductState = (props) => {
       name: "apple",
       description: "This is product apple",
       price: 10.99,
+      instock: 5,
       category: "fruit",
     },
     {
@@ -15,6 +17,7 @@ const ProductState = (props) => {
       name: "banana",
       description: "This is product banana",
       price: 19.99,
+      instock: 10,
       category: "vegetable",
     },
     {
@@ -23,6 +26,7 @@ const ProductState = (props) => {
       description: "This is product  mango",
       price: 19.99,
       category: "fruit",
+      instock: 2,
     },
     {
       id: 4,
@@ -30,9 +34,16 @@ const ProductState = (props) => {
       description: "This is product  grapes",
       price: 19.99,
       category: "food",
+      instock: 5,
     },
   ];
   const [products, setProducts] = React.useState("kishor");
+
+  const [state, dispatch] = useReducer(cartReducer, {
+    cart: [],
+    products: prod,
+  });
+  const [singleProduct, setSingleProduct] = React.useState("kishor");
 
   const fetchProducts = async () => {
     try {
@@ -47,8 +58,31 @@ const ProductState = (props) => {
     }
   };
 
+  const fetchSingleProduct = async (id) => {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${id}`, //fetch single product by id from api template literal to pass the id in the url
+      );
+      const data = await response.json();
+      setSingleProduct(data);
+      console.log("single product data from api", data);
+    } catch (error) {
+      console.error("Error fetching single product:", error);
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{ prod: prod, fetchProducts, products }}>
+    <ProductContext.Provider
+      value={{
+        prod: prod,
+        fetchProducts,
+        products,
+        fetchSingleProduct,
+        singleProduct,
+        state,
+        dispatch,
+      }}
+    >
       {props.children}
     </ProductContext.Provider>
   );

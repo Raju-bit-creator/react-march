@@ -1,7 +1,13 @@
 import React from "react";
+import SmallHero from "./SmallHero";
 
 const About = () => {
-  return <div>About</div>;
+  const title = "About Us";
+  return (
+    <div>
+      <SmallHero title={title} />
+    </div>
+  );
 };
 
 export default About;
