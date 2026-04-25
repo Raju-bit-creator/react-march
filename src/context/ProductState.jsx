@@ -5,7 +5,7 @@ import { cartReducer } from "./Reducer";
 const ProductState = (props) => {
   const prod = [
     {
-      id: 1,
+      _id: 1,
       name: "apple",
       description: "This is product apple",
       price: 10.99,
@@ -13,7 +13,7 @@ const ProductState = (props) => {
       category: "fruit",
     },
     {
-      id: 2,
+      _id: 2,
       name: "banana",
       description: "This is product banana",
       price: 19.99,
@@ -21,7 +21,7 @@ const ProductState = (props) => {
       category: "vegetable",
     },
     {
-      id: 3,
+      _id: 3,
       name: "mango",
       description: "This is product  mango",
       price: 19.99,
@@ -29,7 +29,7 @@ const ProductState = (props) => {
       instock: 2,
     },
     {
-      id: 4,
+      _id: 4,
       name: "grapes",
       description: "This is product  grapes",
       price: 19.99,
