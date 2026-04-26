@@ -9,7 +9,7 @@ const ProductState = (props) => {
       name: "apple",
       description: "This is product apple",
       price: 10.99,
-      instock: 5,
+      instock: 3,
       category: "fruit",
     },
     {

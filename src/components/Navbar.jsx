@@ -36,12 +36,14 @@ const Navbar = ({ title }) => {
                 <li className="text-white">Contact</li>
               </Link>
             </ul>
-            <div className="relative flex items-center gap-0.5">
-              <FaShoppingCart className="text-white" />
-              <span className="inline-flex -mt-[16px] items-center rounded-md bg-red-600 px-2 py-1 text-xs font-medium text-white inset-ring inset-ring-gray-400/20">
-                {cart.length}
-              </span>
-            </div>
+            <Link to="/cartitems">
+              <div className="relative flex items-center gap-0.5">
+                <FaShoppingCart className="text-white" />
+                <span className="inline-flex -mt-[16px] items-center rounded-md bg-red-600 px-2 py-1 text-xs font-medium text-white inset-ring inset-ring-gray-400/20">
+                  {cart.length}
+                </span>
+              </div>
+            </Link>
             <Link to="/login">
               <button
                 onClick={handleClick}
