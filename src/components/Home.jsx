@@ -4,8 +4,10 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import image1 from "../assets/hero1.jpg";
 import image2 from "../assets/hero1.jpg";
+import { ToastContainer, toast } from "react-toastify";
 
 const Home = () => {
+  const notify = () => toast("login successfull!");
   return (
     <div>
       <Carousel>
@@ -85,6 +87,10 @@ const Home = () => {
         <div className="absolute bottom-20 left-100 bg-gray-400 p-2">
           <p>Absolute child</p>
         </div>
+      </div>
+      <div>
+        <button onClick={notify}>login!</button>
+        <ToastContainer />
       </div>
     </div>
   );

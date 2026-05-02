@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import SmallHero from "./SmallHero";
 import ProductContext from "../context/ProductContext";
 import LoginImage from "../assets/login.png";
+import { MdDelete } from "react-icons/md";
 
 const CartItems = () => {
   const context = useContext(ProductContext);
@@ -32,6 +33,7 @@ const CartItems = () => {
                   <th className="px-6 py-3">Image</th>
                   <th className="px-6 py-3">Name</th>
                   <th className="px-6 py-3">Description</th>
+                  <th className="px-6 py-3">Action</th>
                   <th className="px-6 py-3">Price</th>
                   <th className="px-6 py-3">Stock</th>
                 </tr>
@@ -51,6 +53,19 @@ const CartItems = () => {
                     </td>
                     <td className="px-6 py-4 text-gray-600">
                       {item.description}
+                    </td>
+                    <td>
+                      <button
+                        onClick={() =>
+                          dispatch({
+                            type: "REMOVE_FROM_CART",
+                            payload: item,
+                          })
+                        }
+                        className=""
+                      >
+                        <MdDelete />
+                      </button>
                     </td>
                     <td className="px-6 py-4 text-green-600 font-semibold">
                       ${item.price}
