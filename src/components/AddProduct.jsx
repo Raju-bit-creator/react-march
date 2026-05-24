@@ -12,22 +12,24 @@ const AddProduct = () => {
     image: "",
   });
 
+  let BASE_URL = import.meta.env.VITE_API_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("product created");
     const formData = new FormData();
-    formData.append("title", product.title);
+    formData.append("name", product.name);
     formData.append("description", product.description);
     formData.append("price", product.price);
     formData.append("instock", product.instock);
 
     if (product.image) {
-      formData.append("myfile", product.image);
+      formData.append("image", product.image);
     }
 
     try {
       const response = await axios.post(
-        "https://jsonplaceholder.typicode.com/todos/post",
+        `${BASE_URL}/products/addproduct`,
         formData,
         {
           headers: {

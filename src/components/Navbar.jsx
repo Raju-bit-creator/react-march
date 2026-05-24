@@ -1,9 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import ProductContext from "../context/ProductContext";
 
 const Navbar = ({ title }) => {
+  const navigate = useNavigate();
   const context = useContext(ProductContext);
   const {
     state: { cart },
@@ -12,6 +13,11 @@ const Navbar = ({ title }) => {
   const handleClick = () => {
     setCount((i) => i + 1);
     console.log("count", count);
+  };
+  const token = localStorage.getItem("token");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   };
   console.log("title", title);
   return (
@@ -44,14 +50,20 @@ const Navbar = ({ title }) => {
                 </span>
               </div>
             </Link>
-            <Link to="/login">
+            {token ? (
               <button
-                onClick={handleClick}
+                onClick={handleLogout}
                 className="text-white border border-white px-4 py-1 rounded-md"
               >
-                Login
+                Logout
               </button>
-            </Link>
+            ) : (
+              <Link to="/login">
+                <button className="text-white border border-white px-4 py-1 rounded-md">
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
           <div className="flex lg:hidden">
             <button
@@ -148,12 +160,20 @@ const Navbar = ({ title }) => {
                       </a>
                     </div>
                     <div className="py-6">
-                      <a
-                        href="#"
-                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-white/5"
-                      >
-                        Log in
-                      </a>
+                      {token ? (
+                        <button
+                          onClick={handleLogout}
+                          className="text-white border border-white px-4 py-1 rounded-md"
+                        >
+                          Logout
+                        </button>
+                      ) : (
+                        <Link to="/login">
+                          <button className="text-white border border-white px-4 py-1 rounded-md">
+                            Login
+                          </button>
+                        </Link>
+                      )}
                     </div>
                   </div>
                 </div>

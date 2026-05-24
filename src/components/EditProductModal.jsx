@@ -75,7 +75,7 @@ const EditProductModal = ({ isOpen, onClose, product, onSave }) => {
             </button>
             <button
               type="submit"
-              onClick={onSave(formData)}
+              onClick={() => onSave(formData)}
               className="bg-blue-500 text-white px-3 py-1"
             >
               Update

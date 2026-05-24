@@ -3,6 +3,8 @@ import ProductContext from "./ProductContext";
 import { cartReducer } from "./Reducer";
 
 const ProductState = (props) => {
+  const BASE_URL = import.meta.env.VITE_API_URL;
+  const token = localStorage.getItem("token");
   const prod = [
     {
       _id: 1,
@@ -37,24 +39,64 @@ const ProductState = (props) => {
       instock: 5,
     },
   ];
-  const [products, setProducts] = React.useState("kishor");
+  const [products, setProducts] = React.useState([]);
 
   const [state, dispatch] = useReducer(cartReducer, {
     cart: [],
     products: prod,
   });
-  const [singleProduct, setSingleProduct] = React.useState("kishor");
+  const [singleProduct, setSingleProduct] = React.useState([]);
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/todos/1",
-      );
+      const response = await fetch(`${BASE_URL}/products/allproduct`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": token,
+        },
+      });
       const data = await response.json();
+      console.log("data from api first", data);
       setProducts(data);
-      console.log("data from api", data);
+      console.log("data from api second", data);
     } catch (error) {
       console.error("Error fetching products:", error);
+    }
+  };
+
+  const editProduct = async (id, updatedProduct) => {
+    try {
+      const response = await fetch(`${BASE_URL}/products/updateproduct/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": token,
+        },
+        body: JSON.stringify(updatedProduct),
+      });
+      const data = await response.json();
+      console.log("updated product data from api", data);
+      fetchProducts(); //fetch products again to get the updated product list
+    } catch (error) {
+      console.error("Error updating product:", error);
+    }
+  };
+
+  const deleteProduct = async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/products/deleteproduct/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": token,
+        },
+      });
+      const data = await response.json();
+      console.log("deleted product data from api", data);
+      fetchProducts(); //fetch products again to get the updated product list after deletion
+    } catch (error) {
+      console.error("Error deleting product:", error);
     }
   };
 
@@ -81,6 +123,8 @@ const ProductState = (props) => {
         singleProduct,
         state,
         dispatch,
+        editProduct,
+        deleteProduct,
       }}
     >
       {props.children}

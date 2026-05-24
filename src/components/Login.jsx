@@ -1,31 +1,51 @@
 import React from "react";
 import LoginImage from "../assets/login.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [credentials, setCredentials] = React.useState({
     email: "",
     password: "",
   });
 
-  const api = import.meta.env.VITE_API_URL;
+  let BASE_URL = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(credentials);
+
     if (credentials.email === "" || credentials.password === "") {
-      alert("Please fill in all fields");
-    } else {
-      // Perform login logic here
-      const response = await fetch(`${api}/api/auth/login`, {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BASE_URL}/auth/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(credentials),
       });
+
       const data = await response.json();
+
       console.log(data);
-      {
+
+      if (response.ok) {
+        toast.success(data.message);
+        localStorage.setItem("token", data.authToken);
+        navigate("/");
+      } else {
+        toast.error(data.message);
       }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -35,6 +55,7 @@ const Login = () => {
 
   return (
     <div className="w-full flex flex-row hover:origin-top  gap-4 justify-center px-10 py-20">
+      <ToastContainer />
       <div>
         <div className="w-full rounded-full bg-gray-200 flex items-center justify-center">
           <img src={LoginImage} alt="login" className="aspect-square" />

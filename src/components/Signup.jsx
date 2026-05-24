@@ -1,8 +1,13 @@
 import React from "react";
 import LoginImage from "../assets/login.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [credentials, setCredentials] = React.useState({
     name: "",
     phone: "",
@@ -19,13 +24,20 @@ const Signup = () => {
       alert("Please fill in all fields");
     } else {
       // Perform login logic here
-      const response = await fetch(`${api}/api/auth/signup`, {
+      const response = await fetch(`${api}/auth/createuser`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
       });
       const data = await response.json();
       console.log(data);
+      if (response.ok) {
+        toast.success(data.message);
+        localStorage.setItem("token", data.token);
+        navigate("/login");
+      } else {
+        toast.error(data.message);
+      }
       credentials.name = "";
       credentials.email = "";
       credentials.password = "";
@@ -41,6 +53,7 @@ const Signup = () => {
 
   return (
     <div className="w-full flex flex-row hover:origin-top  gap-4 justify-center px-10 py-20">
+      <ToastContainer />
       <div>
         <div className="w-full rounded-full bg-gray-200 flex items-center justify-center">
           <img src={LoginImage} alt="login" className="aspect-square" />
@@ -94,7 +107,7 @@ const Signup = () => {
             type="submit"
             className="bg-blue-500 px-3 py-1 text-white rounded-md hover:bg-black transition duration-300"
           >
-            Login
+            Register
           </button>
           <p>
             Not register? <Link to="/login">Sign in</Link>

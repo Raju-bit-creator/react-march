@@ -8,7 +8,14 @@ import EditProductModal from "./EditProductModal";
 
 const Product = () => {
   const context = useContext(ProductContext);
-  const { fetchProducts, products, state, dispatch } = context; //destructuring the context to get the products and fetchProducts function
+  const {
+    fetchProducts,
+    products,
+    state,
+    editProduct,
+    deleteProduct,
+    dispatch,
+  } = context; //destructuring the context to get the products and fetchProducts function
   // console.log("my products", context);
   // console.log("products from api", products);
   // console.log("initial state from reducer value111111", state);
@@ -44,12 +51,15 @@ const Product = () => {
 
   const saveEdit = (updatedProduct) => {
     console.log("updated product 3333", updatedProduct);
+    editProduct(selectedProduct._id, updatedProduct); //call the editProduct function from the context to update the product in the backend
+    setSelectedProduct(null);
+    setModalVisible(false); //close the edit modal after saving the changes
     // TODO: Implement remainging
   };
 
-  const handleDelete = (product_id) => {
+  const handleDelete = async (product_id) => {
     console.log("delete product id", product_id);
-    // TODO: Implement remainging
+    await deleteProduct(product_id); //call the deleteProduct function from the context to delete the product from the backend
   };
 
   useEffect(() => {
@@ -76,13 +86,22 @@ const Product = () => {
             </button>
           </div>
           <div className="mb-4 flex items-center">
-            {prod?.map((product) => (
+            {products?.map((product) => (
               <div
                 key={product.id}
                 // onClick={() => handleClick(product.id, product.category)}
                 className="mb-2 p-4 bg-white rounded shadow"
               >
-                <img src={productImage} alt="" />
+                <img
+                  src={
+                    product.image?.[0]
+                      ? `http://localhost:3000/uploads/${product.image[0]}`
+                      : productImage
+                  }
+                  height={300}
+                  width={350}
+                  alt="product image"
+                />
                 <div className="flex justify-between">
                   <div>
                     <h2 className="text-xl font-semibold">{product.name}</h2>
@@ -135,7 +154,7 @@ const Product = () => {
                       </div>
                     )}
                   </div>
-                  {modalVisible && selectedProduct._id === product._id && (
+                  {modalVisible && selectedProduct?._id === product._id && (
                     <EditProductModal
                       isOpen={modalVisible}
                       product={selectedProduct}
