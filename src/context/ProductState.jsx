@@ -47,15 +47,18 @@ const ProductState = (props) => {
   });
   const [singleProduct, setSingleProduct] = React.useState([]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (searchQuery = "") => {
     try {
-      const response = await fetch(`${BASE_URL}/products/allproduct`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "auth-token": token,
+      const response = await fetch(
+        `${BASE_URL}/products/allproduct?searchQuery=${searchQuery}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": token,
+          },
         },
-      });
+      );
       const data = await response.json();
       console.log("data from api first", data);
       setProducts(data);
@@ -133,3 +136,35 @@ const ProductState = (props) => {
 };
 
 export default ProductState;
+
+// import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from "react";
+
+// type ProductType = {
+//   male: true;
+// };
+// const ProductContext = createContext<null | ProductType>(null);
+
+// export const useProductContext = () => {
+//   const context = useContext(ProductContext);
+//   if (!context) {
+//     throw new Error("useProduct should be used within Product provider");
+//   }
+//   return context;
+// };
+
+// export const ProductProvider = ({ children }: PropsWithChildren) => {
+
+//   const memoValue = useMemo(
+//     () =>
+//       ({
+//         male: true,
+//       }) as ProductType,
+//     [],
+//   );
+
+//   return (
+//     <ProductContext.Provider value={memoValue}>
+//       {children}
+//     </ProductContext.Provider>
+//   );
+// };

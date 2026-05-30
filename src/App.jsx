@@ -16,6 +16,7 @@ import Product from "./components/Product";
 import SingleProduct from "./components/SingleProduct";
 import AddProduct from "./components/AddProduct";
 import CartItems from "./components/CartItems";
+import SearchResult from "./components/SearchResult";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -48,6 +49,7 @@ function App() {
             <Route path="/products/:id/:category" element={<SingleProduct />} />
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/cartitems" element={<CartItems />} />
+            <Route path="/search/:searchQuery" element={<SearchResult />} />
           </Routes>
           <Footer />
         </Router>

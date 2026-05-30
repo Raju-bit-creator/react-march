@@ -1,9 +1,13 @@
 import React from "react";
 import SmallHero from "./SmallHero";
 import axios from "axios";
-import { data } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddProduct = () => {
+  const navigate = useNavigate();
   const [product, setProduct] = React.useState({
     name: "",
     description: "",
@@ -38,6 +42,10 @@ const AddProduct = () => {
         },
       );
       const data = await response.data;
+      toast.success("product created successfully");
+      setTimeout(() => {
+        navigate("/products");
+      }, 2000);
       console.log("create product ", data);
       setProduct({
         name: "",
@@ -62,6 +70,8 @@ const AddProduct = () => {
   return (
     <div>
       <SmallHero title="Add New Product" />
+
+      <ToastContainer />
       <div className="min-h-screen flex flex-col items-center bg-gray-100">
         <div className="max-w-7xl w-full px-4 py-8">
           <h1 className="text-2xl font-bold mb-4">Add New Product</h1>

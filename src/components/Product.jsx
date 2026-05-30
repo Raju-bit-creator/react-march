@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import ProductContext from "../context/ProductContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import productImage from "../assets/veg.png";
 import SmallHero from "./SmallHero";
 import { BsThreeDots } from "react-icons/bs";
@@ -15,15 +15,14 @@ const Product = () => {
     editProduct,
     deleteProduct,
     dispatch,
-  } = context; //destructuring the context to get the products and fetchProducts function
-  // console.log("my products", context);
-  // console.log("products from api", products);
-  // console.log("initial state from reducer value111111", state);
-  const prod = state.products; //getting the products from the reducer state
-  const cart = state.cart; //getting the cart from the reducer state
+  } = context;
 
-  console.log("products from  state", prod);
-  console.log("cart from state22222", cart);
+  const params = useParams();
+  const { searchQuery } = params;
+  console.log("searchquery", searchQuery);
+
+  const prod = state.products;
+  const cart = state.cart;
 
   const navigate = useNavigate();
 
@@ -32,65 +31,62 @@ const Product = () => {
   const [selectedProduct, setSelectedProduct] = React.useState(null);
 
   const toggleMenu = (product_id) => {
-    console.log("clicked product id", product_id);
     setMenuVisible((prevState) => ({
       ...prevState,
-      [product_id]: !prevState[product_id], //toggle the menu visibility for the clicked product
+      [product_id]: !prevState[product_id],
     }));
   };
 
   const openEditModal = (product) => {
-    setSelectedProduct(product); //set the selected product to be edited
-    setModalVisible(true); //open the edit modal
+    setSelectedProduct(product);
+    setModalVisible(true);
   };
 
   const closeEditModal = () => {
     setSelectedProduct(null);
-    setModalVisible(false); //close the edit modal
+    setModalVisible(false);
   };
 
   const saveEdit = (updatedProduct) => {
-    console.log("updated product 3333", updatedProduct);
-    editProduct(selectedProduct._id, updatedProduct); //call the editProduct function from the context to update the product in the backend
+    editProduct(selectedProduct._id, updatedProduct);
     setSelectedProduct(null);
-    setModalVisible(false); //close the edit modal after saving the changes
-    // TODO: Implement remainging
+    setModalVisible(false);
   };
 
   const handleDelete = async (product_id) => {
-    console.log("delete product id", product_id);
-    await deleteProduct(product_id); //call the deleteProduct function from the context to delete the product from the backend
+    await deleteProduct(product_id);
   };
 
   useEffect(() => {
-    fetchProducts(); //fetch products when the component mounts
-  }, []); //empty dependency array means this effect runs only once when the component mounts
+    fetchProducts(searchQuery);
+  }, []);
+
   const handleClick = (id, category) => {
-    console.log("clicked product id", id);
-    console.log("clicked product category", category);
-    navigate(`/products/${id}/${category}`); //navigate to the single product page with the product id in the url
+    navigate(`/products/${id}/${category}`);
   };
+
   const title = "Our Products";
+
   return (
     <div>
       <SmallHero title={title} />
       <div className="min-h-screen flex flex-col items-center bg-gray-100">
         <div className="max-w-7xl w-full px-4 py-8">
-          <div className="flex justify-between ">
-            <h1 className="text-2xl font-bold mb-4">Products List</h1>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+            <h1 className="text-2xl font-bold">Products List</h1>
             <button
               onClick={() => navigate("/addproduct")}
-              className="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+              className="w-full sm:w-auto px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
             >
               Add New Product
             </button>
           </div>
-          <div className="mb-4 flex items-center">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {products?.map((product) => (
               <div
                 key={product.id}
-                // onClick={() => handleClick(product.id, product.category)}
-                className="mb-2 p-4 bg-white rounded shadow"
+                className="bg-white rounded shadow p-4 flex flex-col"
               >
                 <img
                   src={
@@ -98,16 +94,21 @@ const Product = () => {
                       ? `http://localhost:3000/uploads/${product.image[0]}`
                       : productImage
                   }
-                  height={300}
-                  width={350}
+                  className="w-full h-48 object-cover rounded mb-3"
                   alt="product image"
                 />
-                <div className="flex justify-between">
-                  <div>
-                    <h2 className="text-xl font-semibold">{product.name}</h2>
 
-                    <p>{product.description}</p>
-                    <p className="text-[#60BB46] font-bold">${product.price}</p>
+                <div className="flex justify-between items-start flex-1">
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-lg font-semibold truncate">
+                      {product.name}
+                    </h2>
+                    <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                      {product.description}
+                    </p>
+                    <p className="text-[#60BB46] font-bold mt-2">
+                      ${product.price}
+                    </p>
 
                     {cart && cart.some((p) => p._id === product._id) ? (
                       <button
@@ -117,52 +118,55 @@ const Product = () => {
                             payload: product,
                           })
                         }
-                        className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
+                        className="mt-3 w-full px-3 py-2 bg-red-500 text-white text-sm rounded hover:bg-red-600 transition-colors"
                       >
-                        Remove form Cart
+                        Remove from Cart
                       </button>
                     ) : (
                       <button
-                        className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                         onClick={() =>
                           dispatch({ type: "ADD_TO_CART", payload: product })
                         }
+                        className="mt-3 w-full px-3 py-2 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors"
                       >
                         Add to Cart
                       </button>
                     )}
                   </div>
-                  <div>
+
+                  <div className="relative ml-2 flex-shrink-0">
                     <BsThreeDots
                       onClick={() => toggleMenu(product._id)}
-                      className="cursor-pointer"
+                      className="cursor-pointer text-gray-500 hover:text-gray-800 transition-colors"
+                      size={20}
                     />
                     {menuVisible[product._id] && (
-                      <div className="menu-options flex flex-col bg-white">
+                      <div className="absolute right-0 z-10 mt-1 flex flex-col bg-white shadow-lg rounded overflow-hidden border border-gray-100">
                         <button
                           onClick={() => openEditModal(product)}
-                          className="text-white bg-yellow-400 p-2"
+                          className="px-4 py-2 text-sm text-white bg-yellow-400 hover:bg-yellow-500 transition-colors"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDelete(product._id)}
-                          className="text-white bg-red-500 p-2"
+                          className="px-4 py-2 text-sm text-white bg-red-500 hover:bg-red-600 transition-colors"
                         >
                           Delete
                         </button>
                       </div>
                     )}
                   </div>
-                  {modalVisible && selectedProduct?._id === product._id && (
-                    <EditProductModal
-                      isOpen={modalVisible}
-                      product={selectedProduct}
-                      onClose={closeEditModal}
-                      onSave={saveEdit}
-                    />
-                  )}
                 </div>
+
+                {modalVisible && selectedProduct?._id === product._id && (
+                  <EditProductModal
+                    isOpen={modalVisible}
+                    product={selectedProduct}
+                    onClose={closeEditModal}
+                    onSave={saveEdit}
+                  />
+                )}
               </div>
             ))}
           </div>

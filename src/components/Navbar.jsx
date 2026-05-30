@@ -4,6 +4,7 @@ import { FaShoppingCart } from "react-icons/fa";
 import ProductContext from "../context/ProductContext";
 
 const Navbar = ({ title }) => {
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const context = useContext(ProductContext);
   const {
@@ -15,6 +16,16 @@ const Navbar = ({ title }) => {
     console.log("count", count);
   };
   const token = localStorage.getItem("token");
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search/${searchQuery}`);
+    searchQuery && setSearchQuery("");
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -26,6 +37,26 @@ const Navbar = ({ title }) => {
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-3xl text-white font-bold">{title}</h2>
+          </div>
+          <div>
+            <form
+              onSubmit={handleSearchSubmit}
+              className="flex items-center gap-2"
+            >
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder="Search products..."
+                className="px-4 py-2 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2 bg-orange-400 text-white rounded-md hover:bg-blue-600 transition-colors"
+              >
+                Search
+              </button>
+            </form>
           </div>
           <div className="md:flex hidden items-center gap-4">
             <ul className="flex gap-4">
