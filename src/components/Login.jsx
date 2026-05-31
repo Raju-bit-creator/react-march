@@ -95,6 +95,12 @@ const Login = () => {
             Not register? <Link to="/register">Sign up</Link>
           </p>
         </form>
+        <Link
+          to="/forgot-password"
+          className="text-sm text-blue-500 hover:underline mt-2 block"
+        >
+          Forgot Password?
+        </Link>
       </div>
 
       {/* <button className="bg-blue-500 px-3 outline outline-offset-2 outline-pink-500 py-1 translate-y-4 origin-center rotate-12 hover:origin-top  text-white rounded-md hover:bg-black transition duration-300">

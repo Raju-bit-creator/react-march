@@ -17,6 +17,8 @@ import SingleProduct from "./components/SingleProduct";
 import AddProduct from "./components/AddProduct";
 import CartItems from "./components/CartItems";
 import SearchResult from "./components/SearchResult";
+import ForgetPassword from "./components/ForgetPassword";
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -50,6 +52,11 @@ function App() {
             <Route path="/addproduct" element={<AddProduct />} />
             <Route path="/cartitems" element={<CartItems />} />
             <Route path="/search/:searchQuery" element={<SearchResult />} />
+            <Route path="/forgot-password" element={<ForgetPassword />} />
+            <Route
+              path="/reset-password/:id/:token"
+              element={<ResetPassword />}
+            />
           </Routes>
           <Footer />
         </Router>
