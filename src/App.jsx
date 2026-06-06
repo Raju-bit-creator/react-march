@@ -19,6 +19,7 @@ import CartItems from "./components/CartItems";
 import SearchResult from "./components/SearchResult";
 import ForgetPassword from "./components/ForgetPassword";
 import ResetPassword from "./components/ResetPassword";
+import VerifyOtp from "./components/VerifyOtp";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -57,6 +58,7 @@ function App() {
               path="/reset-password/:id/:token"
               element={<ResetPassword />}
             />
+            <Route path="/verify-otp" element={<VerifyOtp />} />
           </Routes>
           <Footer />
         </Router>

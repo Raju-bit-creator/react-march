@@ -34,7 +34,20 @@ const Signup = () => {
       if (response.ok) {
         toast.success(data.message);
         localStorage.setItem("token", data.token);
-        navigate("/login");
+        const userId = data?.data?.user?.id || data?.userId;
+        const authToken = data?.authToken || data?.token;
+        if (!userId) {
+          toast.error(
+            "Unable to navigate to OTP verification: missing user ID.",
+          );
+          return;
+        }
+        navigate("/verify-otp", {
+          state: {
+            userId,
+            authToken,
+          },
+        });
       } else {
         toast.error(data.message);
       }
